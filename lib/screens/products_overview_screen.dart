@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ProductsOverView extends StatelessWidget {
+class ProductsOverViewScreen extends StatelessWidget {
+ final List<Product> loadedProducts
+
   @override
   Widget build(BuildContext context) {
     return Container();
