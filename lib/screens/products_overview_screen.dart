@@ -1,15 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:my_shop_app/providers/product.dart';
-import 'package:my_shop_app/screens/products_grid.dart';
 
-class ProductsOverViewScreen extends StatelessWidget {
+import 'package:my_shop_app/providers/products.dart';
+import 'package:my_shop_app/screens/products_grid.dart';
+import 'package:provider/provider.dart';
+
+enum FilterOptions { Favourites, All }
+
+class ProductsOverViewScreen extends StatefulWidget {
+  @override
+  State<ProductsOverViewScreen> createState() => _ProductsOverViewScreenState();
+}
+
+class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
+  var _showOnlyFavorites = false;
   @override
   Widget build(BuildContext context) {
+    final productsContainer = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("My Shop"),
+        actions: [
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favourites) {
+                  _showOnlyFavorites = true;
+                } else {
+                  _showOnlyFavorites = false;
+                }
+              });
+            },
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Only Favorites'),
+                value: FilterOptions.Favourites,
+              ),
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: FilterOptions.All,
+              ),
+            ],
+          )
+        ],
       ),
-      body: ProductsGrid(),
+      body: ProductsGrid(_showOnlyFavorites),
     );
   }
 }
