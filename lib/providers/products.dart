@@ -41,7 +41,7 @@ class Products with ChangeNotifier {
 
   List<Product> get items {
     if (_showFavouritesOnly) {
-      return _items.where((prodItem) => prodItem.isFavourite).toList();
+      return _items.where((prodItem) => prodItem.isFavorite).toList();
     }
     return [..._items];
   }
@@ -61,7 +61,22 @@ class Products with ChangeNotifier {
   }
 
   List<Product> get favoriteItems {
-    return _items.where((prodItem) => prodItem.isFavourite).toList();
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
   }
 
   void addProduct(Product product) {
